@@ -162,7 +162,8 @@ bq query --use_legacy_sql=false "CREATE OR REPLACE MODEL austin.austin_mdl2 OPTI
 
 ```
 bq query --use_legacy_sql=false "SELECT SQRT(mean_squared_error)AS rmse, mean_absolute_error FROM ML.EVALUATE(MODEL austin.austin_mdl1, (SELECT duration_minutes, location, start_station_name, CAST(EXTRACT(dayofweek FROM start_time) AS STRING) as dayofweek, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday, FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips JOIN \`bigquery-public-data.austin_bikeshare.bikeshare_stations\` AS stations ON trips.start_station_id = stations.station_id WHERE EXTRACT(year from start_time) = 2019))"
-
+```
+```
 bq query --use_legacy_sql=false "SELECT SQRT(mean_squared_error)AS rmse, mean_absolute_error FROM ML.EVALUATE(MODEL austin.austin_mdl2, (SELECT duration_minutes, subscriber_type, start_station_name, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips WHERE EXTRACT(year from start_time) = 2019))"
 ```
 
@@ -174,6 +175,7 @@ bq query --use_legacy_sql=false "SELECT SQRT(mean_squared_error)AS rmse, mean_ab
 ```
 bq query --use_legacy_sql=false "SELECT start_station_name, avg(duration_minutes) as avg_duration, count(*) as total_trips FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` WHERE EXTRACT(year FROM start_time) = 2019 GROUP BY start_station_name ORDER BY total_trips DESC"
 ```
+
 ```
 bq query --use_legacy_sql=false "SELECT avg(predicted_duration_minutes),count(duration_minutes) FROM Ml.PREDICT(MODEL austin.austin_mdl2, (SELECT duration_minutes, subscriber_type, start_station_name, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips WHERE EXTRACT(year from start_time)=2019 and start_station_name = '21st & Speedway @PCL' and subscriber_type='Single Trip' ))"
 ```
