@@ -135,7 +135,7 @@ and subscriber_type='Single Trip'));
 ```
 
 
-## cloud shell
+## Cloud shell
 
 ## Task 2: Create a forecasting BigQuery machine learning model.
 
