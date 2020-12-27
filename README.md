@@ -78,8 +78,8 @@ EXTRACT(year from start_time) = 2019
 ```
 ### Model 2
 
-```
-SELECTsql
+```sql
+SELECT
 SQRT(mean_squared_error)AS rmse, mean_absolute_error
 FROM
 ML.EVALUATE(MODEL austin.austin_2, (
