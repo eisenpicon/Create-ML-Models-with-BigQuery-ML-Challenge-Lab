@@ -10,7 +10,7 @@ bq mk austin
 
 ## Task 2: Create a forecasting BigQuery machine learning model.
 
-```
+```sql
 CREATE OR REPLACE MODEL
 austin.austin_1
 OPTIONS(input_label_cols=['duration_minutes'], model_type='linear_reg')
@@ -30,7 +30,8 @@ WHERE
 EXTRACT(year from start_time) = 2018;
 ```
 ## Task 3: Create the second machine learning model.
-```
+
+```sql
 CREATE OR REPLACE MODEL
 austin.austin_2
 OPTIONS(input_label_cols=['duration_minutes'], model_type='linear_reg')
@@ -48,7 +49,7 @@ EXTRACT(year from start_time) = 2018;
 
 ### Model 1
 
-```
+```sql
 SELECT
 SQRT(mean_squared_error) as rmse, mean_absolute_error
 FROM
@@ -76,8 +77,9 @@ EXTRACT(year from start_time) = 2019
 ));
 ```
 ### Model 2
+
 ```
-SELECT
+SELECTsql
 SQRT(mean_squared_error)AS rmse, mean_absolute_error
 FROM
 ML.EVALUATE(MODEL austin.austin_2, (
@@ -93,7 +95,7 @@ EXTRACT(year from start_time) = 2019));
 
 ## Task 5: Use the subscriber type machine learning model to predict average trip durations
 
-```
+```sql
 SELECT start_station_name, avg(duration_minutes) as avg_duration, count(*) as total_trips
 FROM
 `bigquery-public-data.austin_bikeshare.bikeshare_trips`
@@ -106,7 +108,7 @@ ORDER BY total_trips DESC;
 
 ### Now again in BigQuery Editor write this command :
 
-```
+```sql
 SELECT
 avg(predicted_duration_minutes),count(duration_minutes)
 FROM
