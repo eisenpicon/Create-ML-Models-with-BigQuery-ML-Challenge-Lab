@@ -1,2 +1,163 @@
 # Create-ML-Models-with-BigQuery-ML-Challenge-Lab
-You must complete a series of tasks within the allocated time period. Instead of following step-by-step instructions, you'll be given a scenario and a set of tasks - you figure out how to complete it on your own! An automated scoring system (shown on this page) will provide feedback on whether you have completed your tasks correctly.  To score 100% you must complete all tasks within the time period!  When you take a Challenge Lab, you will not be taught Google Cloud concepts. To build the solution to the challenge presented, use skills learned from the labs in the quest this challenge lab is part of. You will be expected to extend your learned skills; you will be expected to change default values, but new concepts will not be introduced.  Topics tested  Create a new BigQuery dataset which will store your BigQuery ML models. Create forecasting (linear regression) models in BigQuery ML. Evaluate the performance of your machine learning models. Make predictions of trip duration using BigQuery ML models.
+
+## BigQuery  console 
+
+## Task 1: Create a dataset to store your machine learning models
+
+bq mk austin
+
+## Task 2: Create a forecasting BigQuery machine learning model.
+
+CREATE OR REPLACE MODEL
+austin.austin_1
+OPTIONS(input_label_cols=['duration_minutes'], model_type='linear_reg')
+AS SELECT
+duration_minutes,
+location,
+start_station_name,
+CAST(EXTRACT(dayofweek FROM start_time) AS STRING) as dayofweek,
+CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday,
+FROM
+`bigquery-public-data.austin_bikeshare.bikeshare_trips` AS trips
+JOIN
+`bigquery-public-data.austin_bikeshare.bikeshare_stations` AS stations
+ON
+trips.start_station_id = stations.station_id
+WHERE
+EXTRACT(year from start_time) = 2018;
+
+## Task 3: Create the second machine learning model.
+
+CREATE OR REPLACE MODEL
+austin.austin_2
+OPTIONS(input_label_cols=['duration_minutes'], model_type='linear_reg')
+AS SELECT
+duration_minutes,
+subscriber_type,
+start_station_name,
+CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` AS trips
+WHERE
+EXTRACT(year from start_time) = 2018;
+
+## Task 4: Evaluate the two machine learning models.
+
+
+### Model 1
+SELECT
+SQRT(mean_squared_error) as rmse, mean_absolute_error
+FROM
+ML.EVALUATE(MODEL austin.austin_1) ;
+SELECT
+SQRT(mean_squared_error) as rmse, mean_absolute_error
+FROM
+ML.EVALUATE(MODEL austin.austin_2);
+SELECT
+SQRT(mean_squared_error)AS rmse, mean_absolute_error
+FROM
+ML.EVALUATE (MODEL austin.austin_1, (
+SELECT
+duration_minutes, location, start_station_name,
+CAST(EXTRACT(dayofweek FROM start_time) AS STRING) as dayofweek,
+CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday,
+FROM
+`bigquery-public-data.austin_bikeshare.bikeshare_trips` AS trips
+JOIN
+`bigquery-public-data.austin_bikeshare.bikeshare_stations` AS stations
+ON
+trips.start_station_id = stations.station_id
+WHERE
+EXTRACT(year from start_time) = 2019
+));
+
+### Model 2
+
+SELECT
+SQRT(mean_squared_error)AS rmse, mean_absolute_error
+FROM
+ML.EVALUATE(MODEL austin.austin_2, (
+SELECT
+duration_minutes, subscriber_type, start_station_name,
+CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday
+FROM
+`bigquery-public-data.austin_bikeshare.bikeshare_trips` AS trips
+WHERE
+EXTRACT(year from start_time) = 2019));
+
+
+
+## Task 5: Use the subscriber type machine learning model to predict average trip durations
+
+SELECT start_station_name, avg(duration_minutes) as avg_duration, count(*) as total_trips
+FROM
+`bigquery-public-data.austin_bikeshare.bikeshare_trips`
+WHERE
+EXTRACT(year FROM start_time) = 2019
+GROUP BY start_station_name
+ORDER BY total_trips DESC;
+
+
+
+### Now again in BigQuery Editor write this command :
+
+SELECT
+avg(predicted_duration_minutes),count(duration_minutes)
+FROM
+Ml.PREDICT(MODEL austin.austin_2, (
+SELECT
+duration_minutes,
+subscriber_type,
+start_station_name,
+CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday
+FROM
+`bigquery-public-data.austin_bikeshare.bikeshare_trips` AS trips
+WHERE
+EXTRACT(year from start_time) = 2019
+and start_station_name = '21st & Speedway @PCL'
+and subscriber_type='Single Trip'));
+
+
+
+## cloud shell
+
+## Task 1: Create a dataset to store your machine learning models
+bq mk austin
+
+## Task 2: Create a forecasting BigQuery machine learning model.
+
+
+export PROJECT_ID=DEVSHELL_PROJECT_ID
+
+bq query --use_legacy_sql=false "CREATE OR REPLACE MODEL austin.austin_1 OPTIONS(input_label_cols=['duration_minutes'], model_type='linear_reg') AS SELECT
+
+duration_minutes, location, start_station_name, CAST(EXTRACT(dayofweek FROM start_time) AS STRING) as dayofweek, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday, FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips JOIN \`bigquery-public-data.austin_bikeshare.bikeshare_stations\` AS stations ON trips.start_station_id = stations.station_id WHERE EXTRACT(year from start_time) = 2018"
+
+
+
+## Task 3: Create the second machine learning model.
+
+
+export PROJECT_ID=DEVSHELL_PROJECT_ID
+
+bq query --use_legacy_sql=false "CREATE OR REPLACE MODEL austin.austin_2 OPTIONS(input_label_cols=['duration_minutes'], model_type='linear_reg') AS SELECT duration_minutes, subscriber_type, start_station_name, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips WHERE EXTRACT(year from start_time) = 2018"
+
+
+
+## Task 4: Evaluate the two machine learning models.
+
+
+bq query --use_legacy_sql=false "SELECT SQRT(mean_squared_error)AS rmse, mean_absolute_error FROM ML.EVALUATE(MODEL austin.austin_1, (SELECT duration_minutes, location, start_station_name, CAST(EXTRACT(dayofweek FROM start_time) AS STRING) as dayofweek, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday, FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips JOIN \`bigquery-public-data.austin_bikeshare.bikeshare_stations\` AS stations ON trips.start_station_id = stations.station_id WHERE EXTRACT(year from start_time) = 2019))"
+
+bq query --use_legacy_sql=false "SELECT SQRT(mean_squared_error)AS rmse, mean_absolute_error FROM ML.EVALUATE(MODEL austin.austin_2, (SELECT duration_minutes, subscriber_type, start_station_name, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips WHERE EXTRACT(year from start_time) = 2019))"
+
+
+
+
+
+## Task 5: Use the subscriber type machine learning model to predict average trip durations
+
+
+bq query --use_legacy_sql=false "SELECT start_station_name, avg(duration_minutes) as avg_duration, count(*) as total_trips FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` WHERE EXTRACT(year FROM start_time) = 2019 GROUP BY start_station_name ORDER BY total_trips DESC"
+
+
+bq query --use_legacy_sql=false "SELECT avg(predicted_duration_minutes),count(duration_minutes) FROM Ml.PREDICT(MODEL austin.austin_2, (SELECT duration_minutes, subscriber_type, start_station_name, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips WHERE EXTRACT(year from start_time)=2019 and start_station_name = '21st & Speedway @PCL' and subscriber_type='Single Trip' ))"
