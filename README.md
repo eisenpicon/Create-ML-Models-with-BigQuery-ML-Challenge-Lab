@@ -5,15 +5,12 @@ Want to build ML models in minutes instead of hours using just SQL? BigQuery ML 
 
 <div align="center"> 
   
-   ![alt text](image/GSP787.png "GSP787")
+   [![alt text](image/GSP787.png "GSP787")](https://google.qwiklabs.com/focuses/14294?parent=catalog)
 </div>
 
 
 [QUEST LINK](https://google.qwiklabs.com/quests/146)
 
----
-
-[Create-ML Models with BigQuery ML Challenge Lab](https://google.qwiklabs.com/focuses/14294?parent=catalog)
 
 ## Task 1: Create a dataset to store your machine learning models
 
