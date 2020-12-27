@@ -1,4 +1,4 @@
-# Create-ML-Models-with-BigQuery-ML-Challenge-Lab
+# [Create-ML Models with BigQuery ML Challenge Lab](https://google.qwiklabs.com/focuses/14294?parent=catalog)
 
 ## Task 1: Create a dataset to store your machine learning models
 
