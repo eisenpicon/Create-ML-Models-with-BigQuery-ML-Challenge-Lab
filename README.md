@@ -1,12 +1,12 @@
 # Create-ML-Models-with-BigQuery-ML-Challenge-Lab
 
-## BigQuery  console 
-
 ## Task 1: Create a dataset to store your machine learning models
 
 ```
 bq mk austin
 ```
+
+## BigQuery  console 
 
 ## Task 2: Create a forecasting BigQuery machine learning model.
 
@@ -128,11 +128,6 @@ and subscriber_type='Single Trip'));
 
 
 ## cloud shell
-
-## Task 1: Create a dataset to store your machine learning models
-```
-bq mk austin
-```
 
 ## Task 2: Create a forecasting BigQuery machine learning model.
 
