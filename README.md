@@ -2,6 +2,13 @@
 
 Want to build ML models in minutes instead of hours using just SQL? BigQuery ML democratizes machine learning by letting data analysts create, train, evaluate, and predict with machine learning models using existing SQL tools and skills. In this series of labs, you will experiment with different model types and learn what makes a good model. Complete this quest including the the challenge lab at the end to receive an exclusive Google Cloud digital badge. The challenge lab does not provide prescriptive steps, but require solutions to be built with minimal guidance and will put your Google Cloud technology skills to the test!
 
+
+<div align="center"> 
+  
+   ![alt text](image/GSP787.png "GSP787")
+</div>
+
+
 [QUEST LINK](https://google.qwiklabs.com/quests/146)
 
 ---
