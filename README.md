@@ -183,3 +183,9 @@ bq query --use_legacy_sql=false "SELECT start_station_name, avg(duration_minutes
 ```
 bq query --use_legacy_sql=false "SELECT avg(predicted_duration_minutes),count(duration_minutes) FROM Ml.PREDICT(MODEL austin.austin_mdl2, (SELECT duration_minutes, subscriber_type, start_station_name, CAST(EXTRACT(hour FROM start_time) AS STRING) AS hourofday FROM \`bigquery-public-data.austin_bikeshare.bikeshare_trips\` AS trips WHERE EXTRACT(year from start_time)=2019 and start_station_name = '21st & Speedway @PCL' and subscriber_type='Single Trip' ))"
 ```
+
+
+<div align="center"> 
+  
+   [![alt text](image/Create-ML-Models-with-Big-Query-ML.png "Create ML Models with BigQuery ML")](https://www.qwiklabs.com/public_profiles/3a451349-23c9-4a64-8464-c164280214a0/badges/607790)
+</div>
