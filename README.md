@@ -1,4 +1,8 @@
-# [Create-ML Models with BigQuery ML Challenge Lab](https://google.qwiklabs.com/focuses/14294?parent=catalog)
+# [Create ML Models with BigQuery ML](https://google.qwiklabs.com/quests/146)
+
+Want to build ML models in minutes instead of hours using just SQL? BigQuery ML democratizes machine learning by letting data analysts create, train, evaluate, and predict with machine learning models using existing SQL tools and skills. In this series of labs, you will experiment with different model types and learn what makes a good model. Complete this quest including the the challenge lab at the end to receive an exclusive Google Cloud digital badge. The challenge lab does not provide prescriptive steps, but require solutions to be built with minimal guidance and will put your Google Cloud technology skills to the test!
+
+## [Create-ML Models with BigQuery ML Challenge Lab](https://google.qwiklabs.com/focuses/14294?parent=catalog)
 
 ## Task 1: Create a dataset to store your machine learning models
 
